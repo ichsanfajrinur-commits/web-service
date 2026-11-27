@@ -1,0 +1,24 @@
+name: Susun foto hero
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'assets/hero.part*'
+permissions:
+  contents: write
+jobs:
+  susun:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Gabung bagian foto
+        run: |
+          cat assets/hero.part1 assets/hero.part2 | base64 -d > assets/hero.jpg
+          rm -f assets/hero.part1 assets/hero.part2
+      - name: Simpan
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A assets
+          git commit -m "Susun foto hero dari bagian-bagian"
+          git push
